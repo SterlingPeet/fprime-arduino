@@ -4,7 +4,7 @@
 // \brief  Parameter database for storing changes that persist across reboots, in the ATmega internal EEPROM.
 // ======================================================================
 
-#include <ATmega/EePrmDb/EePrmDbComponentImpl.hpp>
+#include <ATmega/SvcEePrmDb/EePrmDbComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 
 namespace ATmega {

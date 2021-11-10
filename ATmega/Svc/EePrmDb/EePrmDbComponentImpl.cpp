@@ -5,10 +5,10 @@
 // ======================================================================
 
 
-#include <ATmega/EePrmDb/EePrmDbComponentImpl.hpp>
+#include <ATmega/Svc/EePrmDb/EePrmDbComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include <Fw/Types/Assert.hpp>
-#include <ATmega/EePrmDb/paramTest.h>
+#include <ATmega/Svc/EePrmDb/paramTest.h>
 U16 paramSaveCounter = 0;
 
 
