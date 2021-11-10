@@ -7,7 +7,7 @@
 #ifndef AssertReset_HPP
 #define AssertReset_HPP
 
-#include "ATmega/AssertReset/AssertResetComponentAc.hpp"
+#include "ATmega/Svc/AssertReset/AssertResetComponentAc.hpp"
 #include <Fw/Types/Assert.hpp>
 
 namespace Fw {

@@ -4,7 +4,7 @@
 // \brief  Reset the ATmega via the internal watchdog timer after a FW_ASSERT().
 // ======================================================================
 
-#include <ATmega/AssertReset/AssertResetComponent.hpp>
+#include <ATmega/Svc/AssertReset/AssertResetComponent.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include <Fw/Types/Assert.hpp>
 #include <Fw/Logger/Logger.hpp>
