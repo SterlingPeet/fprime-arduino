@@ -29,5 +29,5 @@ add_definitions(-DFW_BAREMETAL_SCHEDULER=1)
 # Specify CMAKE C and CXX compile flags. DO NOT clear existing flags
 set(FPRIME_USE_BAREMETAL_SCHEDULER ON CACHE BOOL "Uses the baremetal scheduler")
 
-include_directories(SYSTEM "${FPRIME_PROJECT_ROOT}/ATmega/ATmegaTypes")
-include_directories(SYSTEM "${FPRIME_PROJECT_ROOT}/ATmega/ATmegaTypes/Arduino")
+include_directories(SYSTEM "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/ATmegaTypes")
+include_directories(SYSTEM "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/ATmegaTypes/Arduino")
