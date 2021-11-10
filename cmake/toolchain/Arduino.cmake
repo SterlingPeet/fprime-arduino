@@ -101,7 +101,6 @@ set(CMAKE_C_COMPILE_OBJECT   "${CMAKE_C_COMPILER}   -c <SOURCE> -o <OBJECT> <FLA
 
 # Glob up all the files for the Arduino lib build
 file(GLOB ARDUINO_SRC "${ARDUINO_SRC_DIR}/*.cpp" "${ARDUINO_SRC_DIR}/*.h" "${ARDUINO_SRC_DIR}/*.c" "${ARDUINO_SRC_DIR}/*.S" "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/*.cpp" "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/*.h")
-message(STATUS "ARDUINO_SRCS ${ARDUINO_SRC}")
 if (NOT ARDUINO_SRC STREQUAL "")
     set(ARDUINO_ARDUINO_SRC ${ARDUINO_SRC} CACHE STRING "Mega's Arduino Sources")
 endif()
