@@ -1,5 +1,5 @@
 #include <Fw/Types/BasicTypes.hpp>
-#include <ATmega/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <ATmega/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
 #ifdef ARDUINO
     #include <Arduino.h> // Needed for call to sei()
 #endif

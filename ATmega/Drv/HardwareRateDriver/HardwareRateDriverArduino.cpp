@@ -1,5 +1,5 @@
 #include <Fw/Types/BasicTypes.hpp>
-#include <Drv/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <ATmega/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
 #include <Arduino.h>
 #include <TimerOne.h>
 
