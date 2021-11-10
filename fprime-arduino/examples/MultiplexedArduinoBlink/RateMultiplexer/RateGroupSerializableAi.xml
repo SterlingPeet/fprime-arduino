@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serializable namespace="Arduino" name="RateGroup">
+	<comment>
+	This describes a rate group
+	</comment>
+	<members>
+		<member name="InputRate" type="ENUM">
+			<enum name="RateGroupType">
+				<item name="Hz0"/>
+				<item name="Hz1"/>
+				<item name="Hz10"/>
+			</enum>
+		</member>
+	</members>
+</serializable>

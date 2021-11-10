@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface namespace="Arduino" name="ChangeTimer">
+	<import_serializable_type>ATmega/examples/MultiplexedArduinoBlink/RateMultiplexer/RateGroupSerializableAi.xml</import_serializable_type>
+	<import_serializable_type>ATmega/examples/MultiplexedArduinoBlink/RateMultiplexer/ComponentSerializableAi.xml</import_serializable_type>
+	<comment>
+	This describes a component's rate group subscription
+	</comment>
+	<args>
+		<arg name="InputRate" type="RateGroup"/>
+		<arg name="TargetComponent" type="Component"/>
+	</args>
+</interface>

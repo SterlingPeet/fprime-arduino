@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="LoopbackSerial" kind="passive" namespace="Arduino" modeler="true">
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Drv/SerialDriverPorts/SerialReadPortAi.xml</import_port_type>
+    <import_port_type>Drv/SerialDriverPorts/SerialWritePortAi.xml</import_port_type>
+    <ports>
+        <port name="schedIn" data_type="Svc::Sched"  kind="sync_input" max_number="1">
+        </port>
+        <port name="serialRead" data_type="Drv::SerialRead"  kind="output">
+        </port>
+        <port name="serialWrite" data_type="Drv::SerialWrite"  kind="output">
+        </port>
+    </ports>
+
+</component>

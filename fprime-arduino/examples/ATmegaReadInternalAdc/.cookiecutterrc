@@ -1,0 +1,43 @@
+# This file exists so you can easily regenerate your project.
+#
+# `cookiepatcher` is a convenient shim around `cookiecutter`
+# for regenerating projects (it will generate a .cookiecutterrc
+# automatically for any template). To use it:
+#
+#    pip install cookiepatcher
+#    cookiepatcher gh:sterlingpeet/cookiecutter-fprime-deployment ATmegaReadInternalAdc
+#
+# See:
+#    https://pypi.org/project/cookiepatcher
+#
+# Alternatively, you can run:
+#
+#    cookiecutter --overwrite-if-exists --config-file=ATmegaReadInternalAdc/.cookiecutterrc gh:sterlingpeet/cookiecutter-fprime-deployment
+
+default_context:
+
+    _template:                 'gh:SterlingPeet/cookiecutter-fprime-deployment'
+    arduino_log_stream:        'Serial'
+    component_dir_name:        'ReadingDisplay'
+    component_explicit_common: ''
+    component_explicit_component_suffix: 'Component'
+    component_impl_suffix:     'Impl'
+    component_instance_name:   'ReadingDisplay'
+    component_kind:            'passive'
+    component_multiplatform_support: 'no'
+    component_name:            'ReadingDisplay'
+    component_namespace:       'Arduino'
+    component_path_to_fprime_root: '../../..'
+    component_short_description: 'Example component to display the readings from the internal adc channels to the Serial Monitor'
+    component_slug:            'ReadingDisplay'
+    dep_short_description:     "Example deployment to show how to read from the ATmega's internal adc"
+    deployment_dir_name:       'ATmegaReadInternalAdc'
+    deployment_display_name:   'ATmegaReadInternalAdc'
+    deployment_path:           'ATmega/examples'
+    deployment_slug:           'ATmegaReadInternalAdc'
+    email:                     'kmanchikanti6@gatech.edu'
+    full_name:                 'Kaushik Manchikanti'
+    license:                   'None'
+    path_to_fprime_root:       '../..'
+    startup_arduino_led_flash: 'no'
+    startup_delay_msec:        '2000'

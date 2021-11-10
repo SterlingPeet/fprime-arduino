@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="RateMultiplexer" kind="passive" namespace="Arduino" >
+	<import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+	<import_port_type>ATmega/examples/MultiplexedArduinoBlink/RateMultiplexer/ChangeTimerPortAi.xml</import_port_type>
+	<import_serializable_type>ATmega/examples/MultiplexedArduinoBlink/RateMultiplexer/RateGroupSerializableAi.xml</import_serializable_type>
+	<import_serializable_type>ATmega/examples/MultiplexedArduinoBlink/RateMultiplexer/ComponentSerializableAi.xml</import_serializable_type>
+	<comment>
+		Component forwards Shed calls to components subscribed
+		to the originating rate group.
+	</comment>
+
+	<ports>
+		<port name="Input10Hz" data_type="Svc::Sched" kind="sync_input">
+			<comment>
+			This is the input port for Sched types from the 10Hz rate group
+			</comment>
+		</port>
+		<port name="OutputLedBlinker" data_type="Svc::Sched" kind="output">
+			<comment>
+			This is the output port for Sched types intended for the LedBlinker component
+			</comment>
+		</port>
+		<port name= "ChangeRatePort" data_type = "ChangeTimer" kind= "sync_input">
+			<comment>
+			This is the output port for Sched types to Change Rates
+			</comment>
+		</port>
+	</ports>
+	<commands>
+		<command kind="sync" opcode="0" mnemonic="change_rate">
+			<comment>
+			Command for changing rate subscription
+			</comment>
+			<args>
+				<arg name="TargetComponent_comm" type="Component">
+					<comment>Target Component Changing Rates</comment>
+				</arg>
+				<arg name="TargetRateGroup_comm" type="RateGroup">
+					<comment>Target Component Changing Rates</comment>
+				</arg>
+			</args>
+		</command>
+	</commands>
+	<events>
+		<event id="0" name="RATE_CHANGE" severity="ACTIVITY_LO" format_string = "The Rate Group of %s was changed to %s" >
+            <comment>
+            Event to alert change of Rate Group
+            </comment>
+            <args>
+                <arg name="TargetComponent_evt" type="Component">
+                    <comment>Target Component Changing Rates</comment>
+                </arg>
+                <arg name="TargetRateGroup_evt" type="RateGroup">
+                    <comment>Target Component Changing Rates</comment>
+                </arg>
+            </args>
+        </event>
+	</events>
+</component>

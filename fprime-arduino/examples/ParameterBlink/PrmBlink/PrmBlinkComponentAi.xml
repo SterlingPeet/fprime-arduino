@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="../../../../Autocoders/Python/schema/default/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<component name="PrmBlink" kind="passive" namespace="ParamBlinkDemo">
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Drv/GpioDriverPorts/GpioWritePortAi.xml</import_port_type>
+    <comment>Example component to support Parameter Usage LED Blink Demonstration deployment.</comment>
+    <ports>
+        <port name="schedIn" data_type="Svc::Sched" kind="sync_input" max_number="1">
+        </port>
+        <port name="gpio" data_type="Drv::GpioWrite" kind="output" max_number="1">
+        </port>
+    </ports>
+    <commands>
+        <command kind="sync" opcode="0" mnemonic="downlinkParams">
+            <comment>
+            Command to telemeter the current parameter values in use.
+            </comment>
+        </command>
+    </commands>
+    <events>
+        <event id="0" name="PrmBlinkParameterUpdated" severity="ACTIVITY_LO" format_string="PrmBlink Parameter %d was updated">
+            <comment>
+            Report parameter update
+            </comment>
+            <args>
+                <arg name="id" type="U32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+    </events>
+    <telemetry>
+        <channel id="0" name="numBlinks" data_type="U32">
+            <comment>
+            Number of blinks since startup
+            </comment>
+        </channel>
+        <channel id="1" name="blinkDecimate" data_type="U8">
+            <comment>
+            Current setting of the blinkDecimate parameter.
+            </comment>
+        </channel>
+        <channel id="2" name="parameter1" data_type="I16">
+            <comment>
+            Current setting of the parameter1 parameter.
+            </comment>
+        </channel>
+        <channel id="3" name="parameter2" data_type="U32">
+            <comment>
+            Current setting of the parameter2 parameter.
+            </comment>
+        </channel>
+    </telemetry>
+    <parameters>
+        <parameter id="0" set_opcode="1" save_opcode="2" name="blinkDecimate" data_type="U8" default="2">
+            <comment>
+            The number of sched cycles to skip before changing LED state, higher is longer.
+            </comment>
+        </parameter>
+        <parameter id="1" set_opcode="3" save_opcode="4" name="parameter1" data_type="I16" default="11">
+            <comment>
+            A test parameter
+            </comment>
+        </parameter>
+        <parameter id="2" set_opcode="5" save_opcode="6" name="parameter2" data_type="U32" default="100">
+            <comment>
+            A test parameter
+            </comment>
+        </parameter>
+    </parameters>
+</component>

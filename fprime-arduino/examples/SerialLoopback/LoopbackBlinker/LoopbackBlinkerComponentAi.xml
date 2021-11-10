@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../../../Autocoders/Python/schema/default/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<component name="LoopbackBlinker" kind="passive" namespace="example">
+    <!-- Example of importing a port type -->
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Drv/GpioDriverPorts/GpioWritePortAi.xml</import_port_type>
+    <import_port_type>Fw/Buffer/BufferSendPortAi.xml</import_port_type>
+    <comment>Example component to support Serial Loopback Demo deployment.</comment>
+    <ports>
+        <!-- Input ports must be of kind "sync_input" or "async_input" or "guarded_input" -->
+        <!-- Input sched port -->
+        <port name="schedIn" data_type="Svc::Sched" kind="sync_input" max_number="1">
+        </port>
+        <port name="gpio" data_type="Drv::GpioWrite" kind="output" max_number="1">
+        </port>
+        <port name="serialSend" data_type="Fw::BufferSend" kind="output" max_number="1">
+        </port>
+        <port name="serialRecv" data_type="Fw::BufferSend" kind="output" max_number="1">
+        </port>
+    </ports>
+</component>

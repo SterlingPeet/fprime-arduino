@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="../../../../Autocoders/Python/schema/default/topology_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<assembly name="ATmegaReadInternalAdc">
+
+    <!-- Import component declarations -->
+
+    <import_component_type>Svc/ActiveRateGroup/ActiveRateGroupComponentAi.xml</import_component_type>
+    <import_component_type>Svc/RateGroupDriver/RateGroupDriverComponentAi.xml</import_component_type>
+    <import_component_type>ATmega/HardwareRateDriver/HardwareRateDriverComponentAi.xml</import_component_type>
+    <import_component_type>Drv/ATmegaGpioDriver/ATmegaGpioDriverComponentAi.xml</import_component_type>
+    <import_component_type>Drv/ATmegaInternalAdcDriver/ATmegaInternalAdcDriverComponentAi.xml</import_component_type>
+    <import_component_type>ATmega/examples/ATmegaReadInternalAdc/ReadingDisplay/ReadingDisplayComponentAi.xml</import_component_type>
+
+    <!-- Declare component instances - must match names in Components.hpp -->
+
+    <instance namespace="Svc" name="rateGroup10HzComp" type="ActiveRateGroup" base_id="200" base_id_window="20"/>
+
+    <!-- <instance namespace="Svc" name="rateGroup1HzComp" type="ActiveRateGroup" base_id="300" base_id_window="20"/> -->
+
+    <instance namespace="Svc" name="rateGroupDriverComp" type="RateGroupDriver" base_id="1700" base_id_window="20"/>
+
+    <instance namespace="Arduino" name="hardwareRateDriver" type="HardwareRateDriver" base_id="1800" base_id_window="20"/>
+
+    <instance namespace="Drv" name="internalAdc" type="ATmegaInternalAdcDriver" base_id="2000" base_id_window="20"/>
+
+    <instance namespace="Arduino" name="ReadingDisplay" type="ReadingDisplay" base_id="2100" base_id_window="20"/>
+
+    <!--  Choose one of the following -->
+    <!-- <instance namespace="Arduino" name="comm" type="SerialDriver" base_id="2100" base_id_window="20"/> -->
+
+    <!-- Command Registration/Dispatch/Reply Connections -->
+
+    <!-- Command Registration Ports - Registration port number must match dispatch port for each component -->
+
+    <!-- Command Dispatch Ports - Dispatch port number must match registration port for each component -->
+
+    <!-- Command Reply Ports - Go to the same response port on the dispatcher -->
+
+    <!-- Event Logger Binary Connections -->
+
+    <!-- Event Logger Text Connections -->
+
+    <!-- Telemetry Connections -->
+
+    <!-- Time Connections -->
+
+    <!-- Rate Group Connections -->
+
+    <!-- Linux Timer Connection -->
+    <!--<connection name="LinuxTimer">
+        <source component="linuxTimer" port="CycleOut" type="Cycle" num="0"/>
+        <target component="rateGroupDriverComp" port="CycleIn" type="Cycle" num="0"/>
+    </connection>-->
+
+    <!-- Connect the Hardware Driver to the rate group driver -->
+    <connection name="hardwareDriveConn">
+        <source component="hardwareRateDriver" port="CycleOut" type="Cycle" num="0"/>
+        <target component="rateGroupDriverComp" port="CycleIn" type="Cycle" num="0"/>
+    </connection>
+
+    <!-- 10Hz Rate Group -->
+    <connection name="rateGroupDriverComp10Hz">
+        <source component="rateGroupDriverComp" port="CycleOut" type="Cycle" num="0"/>
+        <target component="rateGroup10HzComp" port="CycleIn" type="Cycle" num="0"/>
+    </connection>
+
+    <connection name="ReadingDisplayRg">
+        <source component="rateGroup10HzComp" port="RateGroupMemberOut" type="Sched" num="1"/>
+        <target component="ReadingDisplay" port="schedIn" type="Sched" num="0"/>
+    </connection>
+
+    <!-- Connect the Display Component to the ADC Driver -->
+    <connection name="AdcChannel0">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="0"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="0"/>
+    </connection> 
+
+    <connection name="AdcChannel1">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="1"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="1"/>
+    </connection> 
+
+    <connection name="AdcChannel2">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="2"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="2"/>
+    </connection> 
+
+    <connection name="AdcChannel3">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="3"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="3"/>
+    </connection>
+
+    <connection name="AdcChannel4">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="4"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="4"/>
+    </connection> 
+
+    <connection name="AdcChannel5">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="5"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="5"/>
+    </connection> 
+
+    <connection name="AdcChannel6">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="6"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="6"/>
+    </connection> 
+
+    <connection name="AdcChannel7">
+        <source component="ReadingDisplay" port="getAdc" type="AdcRead" num="7"/>
+        <target component="internalAdc" port="Read_ADC" type="AdcRead" num="7"/>
+    </connection>
+
+    <!-- 1Hz Rate Group -->
+    <!-- <connection name="rateGroupDriverCompRg1Hz"> -->
+        <!-- <source component="rateGroupDriverComp" port="CycleOut" type="Cycle" num="1"/> -->
+        <!-- <target component="rateGroup1HzComp" port="CycleIn" type="Cycle" num="0"/> -->
+    <!-- </connection> -->
+
+    <!-- Health Connections -->
+
+    <!-- The PingSend output port number should match the PingReturn input port number -->
+    <!-- Each port number pair must be unique -->
+    <!-- This order must match the table in Topology.cpp -->
+
+
+    <!-- Ground Interface Connections -->
+
+    <!-- Fault Connections -->
+
+</assembly>

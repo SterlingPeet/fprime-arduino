@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="Loopback" kind="passive" namespace="Arduino" modeler="true">
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Drv/SpiDriverPorts/SpiReadWritePortAi.xml</import_port_type>
+    <ports>
+        <port name="schedIn" data_type="Svc::Sched"  kind="sync_input" max_number="1">
+        </port>
+        <port name="SpiTransaction" data_type="Drv::SpiReadWrite"  kind="output">
+        </port>
+    </ports>
+
+</component>

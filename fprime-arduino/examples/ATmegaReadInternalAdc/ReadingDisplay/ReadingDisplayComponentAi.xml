@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="../../../../Autocoders/Python/schema/default/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<component name="ReadingDisplay" kind="passive" namespace="Arduino">
+    <!-- Example of importing a port type -->
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Drv/AdcDriverPorts/AdcReadPortAi.xml</import_port_type>
+    <import_port_type>Drv/GpioDriverPorts/GpioWritePortAi.xml</import_port_type>
+    <comment>Example component to display the readings from the internal adc channels to the Serial Monitor</comment>
+    <ports>
+        <port name="schedIn" data_type="Svc::Sched" kind="sync_input" max_number="1">
+        </port>
+        <port name="getAdc" data_type="Drv::AdcRead" kind="output" max_number="8">
+        </port>
+        <port name="led" data_type="Drv::GpioWrite" kind="output" max_number="8">
+        </port>
+    </ports>
+</component>

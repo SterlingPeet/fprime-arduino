@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serializable namespace="Arduino" name="Component">
+	<comment>
+	This describes a component
+	</comment>
+	<members>
+		<member name="TargetComponent" type="ENUM">
+			<enum name="ComponentType">
+				<item name="LedBlinker"/>
+			</enum>
+		</member>
+	</members>
+</serializable>
