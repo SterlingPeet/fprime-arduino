@@ -32,6 +32,13 @@ namespace Arduino {
              * Stops the hardware driver, enabling some clean-up.
              */
             void stop();
+
+            //! Initialize object HardwareRateDriver
+            //!
+            void init(
+               const NATIVE_INT_TYPE instance = 0 /*!< The instance number*/
+            );
+
             //!< Driver deconstructor
             ~HardwareRateDriver(void);
             //!< Static callback for task function

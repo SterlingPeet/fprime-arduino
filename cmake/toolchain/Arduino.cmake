@@ -101,6 +101,7 @@ set(CMAKE_C_COMPILE_OBJECT   "${CMAKE_C_COMPILER}   -c <SOURCE> -o <OBJECT> <FLA
 
 # Glob up all the files for the Arduino lib build
 file(GLOB ARDUINO_SRC "${ARDUINO_SRC_DIR}/*.cpp" "${ARDUINO_SRC_DIR}/*.h" "${ARDUINO_SRC_DIR}/*.c" "${ARDUINO_SRC_DIR}/*.S" "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/*.cpp" "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/*.h")
+message(STATUS "ARDUINO_SRCS ${ARDUINO_SRC}")
 if (NOT ARDUINO_SRC STREQUAL "")
     set(ARDUINO_ARDUINO_SRC ${ARDUINO_SRC} CACHE STRING "Mega's Arduino Sources")
 endif()
@@ -121,7 +122,7 @@ function(add_arduino_dependency target)
         target_link_libraries("arduinocore" "m" ${ARDUINO_LIBS})
         target_include_directories("arduinocore" PUBLIC ${ARDUINO_SRC_DIR})
         target_include_directories("arduinocore" PUBLIC ${ARDUINO_VARIANT_SRC_DIR})
-        target_include_directories("arduinocore" PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/")
+        target_include_directories("arduinocore" PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../vendor/libraries/TimerOne/")
         foreach(ARD_DEFINE IN LISTS ARDUINO_CORE_DEFINES)
             target_compile_definitions("arduinocore" PUBLIC "${ARD_DEFINE}")
         endforeach(ARD_DEFINE)
@@ -133,7 +134,7 @@ function(add_arduino_dependency target)
     target_link_libraries(${target} "arduinocore" "m")
     target_include_directories(${target} PUBLIC ${ARDUINO_SRC_DIR})
     target_include_directories(${target} PUBLIC ${ARDUINO_VARIANT_SRC_DIR})
-    target_include_directories(${target} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../ATmega/vendor/libraries/TimerOne/")
+    target_include_directories(${target} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../vendor/libraries/TimerOne/")
 
     # Check if executable
     if (DEFINED ARDUINO_DEPENDENCY_TARGET_TOP)
