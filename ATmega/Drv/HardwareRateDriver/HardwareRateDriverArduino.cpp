@@ -5,6 +5,13 @@
 
 namespace Arduino {
 
+void HardwareRateDriver::init(
+        const NATIVE_INT_TYPE instance
+    )
+  {
+    HardwareRateDriverComponentBase::init(instance);
+  }
+
 void HardwareRateDriver::start() {
     Timer1.initialize(m_interval * 1000);
     Timer1.attachInterrupt(HardwareRateDriver::s_timerISR);
