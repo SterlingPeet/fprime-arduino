@@ -7,7 +7,7 @@
 #ifndef EePrmDb_HPP
 #define EePrmDb_HPP
 
-#include "ATmega/SvcEePrmDb/EePrmDbComponentAc.hpp"
+#include "ATmega/Svc/EePrmDb/EePrmDbComponentAc.hpp"
 #include <Os/Mutex.hpp>
 
 namespace ATmega {
