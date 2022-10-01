@@ -42,3 +42,4 @@ string(REPLACE "|" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 # Establish a link library for the arduino core
 link_libraries("${ARDUINO_CORE_PATH}")
+set(FPRIME_ARDUINO TRUE)

@@ -22,7 +22,7 @@ set(MOD_DEPS
 # layer to take advantage of all functions of F prime (threaded components included) while still
 # not using an OS. It is experimental technology, but it should work.
 ####
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Teensyduino")
+if (FPRIME_ARDUINO)
     set(SOURCE_FILES
         # Common implementations
         "${FPRIME_FRAMEWORK_PATH}/Os/TaskCommon.cpp"
@@ -59,19 +59,8 @@ endif()
 # depend on one another forming a (weak) circular dependency. This is allowed in CMake 3.13 and
 # newer.
 ####
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Teensyduino")
-    add_dependencies(Os fprime-arduino_ArduinoOs)
-    target_link_libraries(Os fprime-arduino_ArduinoOs)
-    target_link_libraries(fprime-arduino_ArduinoOs Os)
-endif()
-####
-# Teensyduino:
-#
-# This sets up a dependency on the Arduino framework compiled with the Teensyduino.cmake toolchain.
-# By doing thi when the Teensyduino os is used, it will also build the Arduino dependency, creating
-# a nice fresh version of Arduino ready to go.
-####
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Teensyduino")
-    get_module_name(${CMAKE_CURRENT_LIST_DIR})
-    add_arduino_dependency("${MODULE_NAME}")
+if (FPRIME_ARDUINO)
+    add_dependencies(Os Arduino_Os)
+    target_link_libraries(Os Arduino_Os)
+    target_link_libraries(Arduino_Os Os)
 endif()
