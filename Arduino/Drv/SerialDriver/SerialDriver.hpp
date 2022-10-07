@@ -8,7 +8,7 @@
 #define SerialDriver_HPP
 
 #include "Os/Task.hpp"
-#include "fprime-arduino/ArduinoDrv/SerialDriver/SerialDriverComponentAc.hpp"
+#include "Arduino/Drv/SerialDriver/SerialDriverComponentAc.hpp"
 
 namespace Arduino {
 //Allow for setting serial ports from the inputs

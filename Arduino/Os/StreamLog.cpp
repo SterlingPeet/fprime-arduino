@@ -10,7 +10,7 @@
  */
 
 #include <Os/Log.hpp>
-#include <fprime-arduino/ArduinoOs/StreamLog.hpp>
+#include <fprime-arduino/Arduino/Os/StreamLog.hpp>
 
 extern "C" {
     #include <stdio.h>

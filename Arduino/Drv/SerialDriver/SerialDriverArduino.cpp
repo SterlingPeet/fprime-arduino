@@ -5,9 +5,9 @@
 // ======================================================================
 
 
-#include <fprime-arduino/ArduinoDrv/SerialDriver/SerialDriver.hpp>
+#include <Arduino/Drv/SerialDriver/SerialDriver.hpp>
 #include "Fw/Types/BasicTypes.hpp"
-#include <Arduino.h>
+#include <FprimeArduino.hpp>
 #include <Os/Log.hpp>
 
 namespace Arduino {
@@ -46,7 +46,7 @@ namespace Arduino {
         Fw::Buffer &fwBuffer
     )
   {
-      reinterpret_cast<HardwareSerial*>(m_port_pointer)->write(reinterpret_cast<U8*>(fwBuffer.getdata()),fwBuffer.getsize());
+      reinterpret_cast<HardwareSerial*>(m_port_pointer)->write(reinterpret_cast<U8*>(fwBuffer.getData()),fwBuffer.getSize());
   }
 
   void SerialDriverComponentImpl ::
@@ -56,12 +56,12 @@ namespace Arduino {
       HardwareSerial* serial_ptr = reinterpret_cast<HardwareSerial*>(m_port_pointer);
       int byte = 0;
       NATIVE_UINT_TYPE count = 0;
-      U8* raw_data = reinterpret_cast<U8*>(fwBuffer.getdata());
-      while ((serial_ptr->available() > 0) && (count < fwBuffer.getsize()) &&
+      U8* raw_data = reinterpret_cast<U8*>(fwBuffer.getData());
+      while ((serial_ptr->available() > 0) && (count < fwBuffer.getSize()) &&
              ((byte = serial_ptr->read()) != -1)) {
           *(raw_data + count) = static_cast<U8>(byte);
           count++;
       }
-      fwBuffer.setsize(count);
+      fwBuffer.setSize(count);
   }
 } // end namespace Svc

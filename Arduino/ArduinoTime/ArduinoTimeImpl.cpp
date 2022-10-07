@@ -8,9 +8,9 @@
  *
  * @author lestarch
  */
-#include <fprime-arduino/ArduinoTime/ArduinoTimeImpl.hpp>
+#include <Arduino/ArduinoTime/ArduinoTimeImpl.hpp>
 #include <Fw/Time/Time.hpp>
-#include <Arduino.h>
+#include <FprimeArduino.hpp>
 
 namespace Svc {
 

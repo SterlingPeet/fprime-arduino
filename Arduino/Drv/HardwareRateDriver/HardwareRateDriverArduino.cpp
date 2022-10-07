@@ -1,7 +1,7 @@
 #include <Fw/Types/BasicTypes.hpp>
 #include <Fw/Types/Assert.hpp>
-#include <fprime-arduino/ArduinoDrv/HardwareRateDriver/HardwareRateDriver.hpp>
-#include <Arduino.h>
+#include <Arduino/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <FprimeArduino.hpp>
 
 namespace Arduino {
 IntervalTimer s_itimer;

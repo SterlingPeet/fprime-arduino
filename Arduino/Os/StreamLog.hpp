@@ -7,7 +7,7 @@
  *  Created on: Apr 13, 2019
  *      Author: lestarch
  */
-#include <Arduino.h>
+#include <FprimeArduino.hpp>
 #ifndef ARDUINO_OS_STREAMLOG_HPP_
 #define ARDUINO_OS_STREAMLOG_HPP_
 

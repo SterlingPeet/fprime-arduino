@@ -1,7 +1,7 @@
 #ifndef ARDUINO_DRV_HARDWARERATEDRIVER_HPP
 #define ARDUINO_DRV_HARDWARERATEDRIVER_HPP
 #include <Svc/Cycle/TimerVal.hpp>
-#include <fprime-arduino/ArduinoDrv/HardwareRateDriver/HardwareRateDriverComponentAc.hpp>
+#include <Arduino/Drv/HardwareRateDriver/HardwareRateDriverComponentAc.hpp>
 
 namespace Arduino {
     /**

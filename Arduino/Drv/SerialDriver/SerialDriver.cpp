@@ -5,7 +5,7 @@
 // ====================================================================== 
 
 
-#include <fprime-arduino/ArduinoDrv/SerialDriver/SerialDriver.hpp>
+#include <Arduino/Drv/SerialDriver/SerialDriver.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 
 namespace Arduino {
@@ -22,7 +22,7 @@ namespace Arduino {
       SerialDriverComponentBase(compName),
       m_port_number(portNum),
       m_port_pointer(static_cast<POINTER_CAST>(NULL)),
-      m_local_buffer(0xfeedfeed, 0xdeeddeed, reinterpret_cast<POINTER_CAST>(m_data), SERIAL_BUFFER_SIZE)
+      m_local_buffer(m_data, SERIAL_BUFFER_SIZE)
   {
 
   }
@@ -61,9 +61,9 @@ namespace Arduino {
         NATIVE_UINT_TYPE context /*!< The call order*/
     )
   {
-      m_local_buffer.setsize(SERIAL_BUFFER_SIZE);
+      m_local_buffer.setSize(SERIAL_BUFFER_SIZE);
       read_data(m_local_buffer);
-      if (m_local_buffer.getsize() > 0) {
+      if (m_local_buffer.getSize() > 0) {
           readCallback_out(0, m_local_buffer);
       }
   }

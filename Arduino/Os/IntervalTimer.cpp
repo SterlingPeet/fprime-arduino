@@ -3,7 +3,7 @@
 #include <time.h>
 #include <errno.h>
 #include <string.h>
-#include <Arduino.h>
+#include <FprimeArduino.hpp>
 
 namespace Os {
     

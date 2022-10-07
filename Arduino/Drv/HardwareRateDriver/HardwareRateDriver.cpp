@@ -1,6 +1,6 @@
 #include <Fw/Types/BasicTypes.hpp>
 #include <Fw/Types/Assert.hpp>
-#include <fprime-arduino/ArduinoDrv/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <Arduino/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
 
 namespace Arduino {
 
