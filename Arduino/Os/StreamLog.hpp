@@ -8,8 +8,8 @@
  *      Author: lestarch
  */
 #include <Arduino.h>
-#ifndef OS_ARDUINO_STREAMLOG_HPP_
-#define OS_ARDUINO_STREAMLOG_HPP_
+#ifndef ARDUINO_OS_STREAMLOG_HPP_
+#define ARDUINO_OS_STREAMLOG_HPP_
 
 namespace Os {
 /**

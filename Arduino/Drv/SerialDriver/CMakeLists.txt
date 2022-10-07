@@ -6,7 +6,7 @@
 #
 ####
 set(SOURCE_FILES
-  "${CMAKE_CURRENT_LIST_DIR}/SerialDriver.fppl"
+  "${CMAKE_CURRENT_LIST_DIR}/SerialDriver.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/SerialDriver.cpp"
 )
 # Check the Linux build

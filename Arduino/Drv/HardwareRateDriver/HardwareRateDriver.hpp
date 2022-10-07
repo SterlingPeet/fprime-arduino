@@ -1,5 +1,5 @@
-#ifndef examples_ARDUINO_HPP
-#define examples_ARDUINO_HPP
+#ifndef ARDUINO_DRV_HARDWARERATEDRIVER_HPP
+#define ARDUINO_DRV_HARDWARERATEDRIVER_HPP
 #include <Svc/Cycle/TimerVal.hpp>
 #include <fprime-arduino/ArduinoDrv/HardwareRateDriver/HardwareRateDriverComponentAc.hpp>
 

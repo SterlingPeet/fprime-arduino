@@ -61,6 +61,6 @@ endif()
 ####
 if (FPRIME_ARDUINO)
     add_dependencies(Os Arduino_Os)
-    target_link_libraries(Os Arduino_Os)
-    target_link_libraries(Arduino_Os Os)
+    target_link_libraries(Os PRIVATE Arduino_Os)
+    target_link_libraries(Arduino_Os PUBLIC Os)
 endif()

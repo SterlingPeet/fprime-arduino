@@ -52,7 +52,7 @@ namespace Os {
         // If stream is defined, then write to it.
         if (A_STREAM != NULL) {
             U32 used = snprintf(message, sizeof(message), format, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
-	    used = (used > sizeof(message)) ? sizeof(message) : used;
+            used = (used > sizeof(message)) ? sizeof(message) : used;
             A_STREAM->write(message, used);
         }
     }
