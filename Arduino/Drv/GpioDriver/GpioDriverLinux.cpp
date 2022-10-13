@@ -13,7 +13,7 @@
 #include <Arduino/Drv/GpioDriver/GpioDriver.hpp>
 #include <FpConfig.hpp>
 
-namespace Drv {
+namespace Arduino {
 
 // ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports

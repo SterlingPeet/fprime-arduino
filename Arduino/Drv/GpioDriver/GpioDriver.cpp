@@ -7,7 +7,7 @@
 #include <Arduino/Drv/GpioDriver/GpioDriver.hpp>
 #include <FpConfig.hpp>
 
-namespace Drv {
+namespace Arduino {
 
 // ----------------------------------------------------------------------
 // Construction, initialization, and destruction

@@ -9,7 +9,7 @@
 
 #include "Arduino/Drv/GpioDriver/GpioDriverComponentAc.hpp"
 
-namespace Drv {
+namespace Arduino {
 
 class GpioDriver : public GpioDriverComponentBase {
     //! configure GPIO

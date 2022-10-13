@@ -14,7 +14,7 @@
 #include <FpConfig.hpp>
 #include <FprimeArduino.hpp>
 
-namespace Drv {
+namespace Arduino {
 
 // ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports
