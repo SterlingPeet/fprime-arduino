@@ -20,9 +20,8 @@
  * In C++ fprime code, users may then refer to FpLimits::PlatformIntType_MIN
  * without referring to this header directly.
  */
-#ifndef TEENSY_TYPES_HPP_
-#define TEENSY_TYPES_HPP_
-#include <limits>
+#ifndef ARDUINO_TYPES_HPP_
+#define ARDUINO_TYPES_HPP_
 
 // Section 0: C Standard Types
 //    fprime depends on the existence of intN_t and uintN_t C standard ints and
@@ -34,14 +33,14 @@
 // switches in this section to control which of the C standard types are
 // available in the system. fprime consumes this information and produces the
 // UN, IN, and FN types we see in fprime code.
-#include <cstdint>
-#include <cinttypes>
-#include <limits>
+#include <stdint.h>
+#include <inttypes.h>
+#include <limits.h>
 
-#define FW_HAS_64_BIT    1 //!< Architecture supports 64 bit integers
+#define FW_HAS_64_BIT    0 //!< Architecture does not support 64 bit integers
 #define FW_HAS_32_BIT    1 //!< Architecture supports 32 bit integers
 #define FW_HAS_16_BIT    1 //!< Architecture supports 16 bit integers
-#define FW_HAS_F64    1 //!< Architecture supports 64 bit floating point numbers
+#define FW_HAS_F64    0 //!< Architecture soed not support 64 bit floating point numbers
 
 // Section 1: Logical Types
 //    fprime requires platform implementors to define logical types for their
@@ -51,8 +50,8 @@
 typedef int32_t PlatformIntType;
 #define PRI_PlatformIntType "d"
 
-typedef int32_t PlatformUIntType;
-#define PRI_PlatformUIntType "ud"
+typedef uint32_t PlatformUIntType;
+#define PRI_PlatformUIntType "u"
 
 typedef PlatformIntType PlatformIndexType;
 #define PRI_PlatformIndexType PRI_PlatformIntType
@@ -94,11 +93,11 @@ typedef PlatformIntType PlatformAssertArgType;
  * ensure that unnecessary storage is not allocated.
  */
 struct PlatformLimits {
-    static const PlatformIntType PlatformIntType_MIN = std::numeric_limits<int>::min();
-    static const PlatformIntType PlatformIntType_MAX = std::numeric_limits<int>::max();
+    static const PlatformIntType PlatformIntType_MIN = INT32_MIN;
+    static const PlatformIntType PlatformIntType_MAX = INT32_MAX;
 
-    static const PlatformUIntType PlatformUIntType_MIN = std::numeric_limits<unsigned int>::min();
-    static const PlatformUIntType PlatformUIntType_MAX = std::numeric_limits<unsigned int>::max();
+    static const PlatformUIntType PlatformUIntType_MIN = 0;
+    static const PlatformUIntType PlatformUIntType_MAX = UINT32_MAX;
 
     static const PlatformIndexType PlatformIndexType_MIN = PlatformIntType_MIN;
     static const PlatformIndexType PlatformIndexType_MAX = PlatformIntType_MAX;
@@ -111,19 +110,19 @@ struct PlatformLimits {
 
     // Pointer sizes are determined by size of compiler
     #if __SIZEOF_POINTER__ == 8
-        static const PlatformPointerCastType PlatformPointerCastType_MIN = std::numeric_limits<uint64_t>::min();
-        static const PlatformPointerCastType PlatformPointerCastType_MAX = std::numeric_limits<uint64_t>::max();
+        static const PlatformPointerCastType PlatformPointerCastType_MIN = 0;
+        static const PlatformPointerCastType PlatformPointerCastType_MAX = UINT64_MAX;
     #elif __SIZEOF_POINTER__ == 4
-        static const PlatformPointerCastType PlatformPointerCastType_MIN = std::numeric_limits<uint32_t>::min();
-        static const PlatformPointerCastType PlatformPointerCastType_MAX = std::numeric_limits<uint32_t>::max();
+        static const PlatformPointerCastType PlatformPointerCastType_MIN = 0;
+        static const PlatformPointerCastType PlatformPointerCastType_MAX = UINT32_MAX;
     #elif __SIZEOF_POINTER__ == 2
-        static const PlatformPointerCastType PlatformPointerCastType_MIN = std::numeric_limits<uint16_t>::min();
-        static const PlatformPointerCastType PlatformPointerCastType_MAX = std::numeric_limits<uint16_t>::max();
+        static const PlatformPointerCastType PlatformPointerCastType_MIN = 0;
+        static const PlatformPointerCastType PlatformPointerCastType_MAX = UINT16_MAX;
     #elif __SIZEOF_POINTER__ == 1
-        static const PlatformPointerCastType PlatformPointerCastType_MIN = std::numeric_limits<uint8_t>::min();
-        static const PlatformPointerCastType PlatformPointerCastType_MAX = std::numeric_limits<uint8_t>::max();
+        static const PlatformPointerCastType PlatformPointerCastType_MIN = 0;
+        static const PlatformPointerCastType PlatformPointerCastType_MAX = UINT8_MAX;
     #else
         #error "Unsupported pointer size"
     #endif
 };
-#endif //PLATFORM_TYPES_HPP_
+#endif //ARDUINO_TYPES_HPP_
