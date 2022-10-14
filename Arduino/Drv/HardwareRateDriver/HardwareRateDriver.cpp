@@ -1,6 +1,8 @@
 #include <Fw/Types/BasicTypes.hpp>
-#include <Fw/Types/Assert.hpp>
-#include <Arduino/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <ATmega/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
+#ifdef ARDUINO
+    #include <Arduino.h> // Needed for call to sei()
+#endif
 
 namespace Arduino {
 
@@ -18,6 +20,9 @@ HardwareRateDriver* HardwareRateDriver::s_driver = NULL;
     void HardwareRateDriver::s_timer(void* comp) {
         Svc::TimerVal now;
         now.take();
+#ifdef ARDUINO
+        sei(); // Enable interrupts so UART RX interrupt handler can receive incoming bytes during the remainder of this ISR
+#endif
         HardwareRateDriver* driver = reinterpret_cast<HardwareRateDriver*>(comp);
         //Check if it is time to run the group
         driver->CycleOut_out(0, now);

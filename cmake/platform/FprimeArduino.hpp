@@ -4,7 +4,6 @@
 // \brief  Compatibility header for use of Arduino.h in fprime-arduino
 // ======================================================================
 #include <Arduino.h>
-
 /**
  * Arduino.h often uses #define constants to setup values like HIGH and LOW. This means that other tokens that contain
  * these #define constants get clobbered by the preprocessor. This remap pulls these tokens into enumeration constants,

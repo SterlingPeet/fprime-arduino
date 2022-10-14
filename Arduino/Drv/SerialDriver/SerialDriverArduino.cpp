@@ -26,12 +26,12 @@ namespace Arduino {
           case 1:
               m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial1);
               break;
-          case 2:
-              m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial2);
-              break;
-          case 3:
-              m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial3);
-              break;
+          //case 2:
+          //    m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial2);
+          //    break;
+          //case 3:
+          //    m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial3);
+          //    break;
       }
       reinterpret_cast<HardwareSerial*>(m_port_pointer)->begin(baud);
   }

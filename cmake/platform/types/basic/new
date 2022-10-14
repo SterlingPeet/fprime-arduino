@@ -1,6 +1,28 @@
-// new
-inline void * operator new (size_t size) { return malloc (size); }
-// placement new
-void * operator new (size_t size, void * ptr) { return ptr; }
-// delete
-void operator delete (void * ptr) { free (ptr); }
+#include <stddef.h>
+#include <stdlib.h>
+
+namespace std {
+    struct nothrow_t {};
+    const nothrow_t nothrow;
+    typedef size_t size_t;
+};
+
+inline void* operator new(std::size_t size) noexcept {
+    return malloc(size);
+}
+
+inline void* operator new(std::size_t size, const std::nothrow_t&) noexcept {
+    return malloc(size); 
+}
+
+inline void* operator new [](std::size_t size, const std::nothrow_t&) noexcept {
+    return malloc(size);
+}
+
+inline void operator delete(void* ptr) {
+    free(ptr);
+}
+
+inline void operator delete [](void* ptr) {
+    free(ptr);
+}
