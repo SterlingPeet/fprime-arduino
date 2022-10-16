@@ -114,12 +114,13 @@ def parse_compilation_commands(output_lines: List[str], mapping: Dict[str, Path]
 
         def filter_function(item: str) -> bool:
             """Filters out -o flag, input and output specifiers"""
-            return item != "-o" and not item.endswith(filename) and not item.endswith(f"{ filename }.o")
+            return item != "-o" and not item.endswith(filename) and not item.endswith(f"{ filename }.o") and item != "-c"
 
         necessary_command_values = list(filter(filter_function, shell_split))
+        expected_command_values = shell_split[:1] + shell_split[2:-3]
         assert (
-            necessary_command_values == shell_split[:-3]
-        ), f"Necessary arguments are usually all but the last 3:\n\t{necessary_command_values}\n\t{shell_split[:-3]}"
+            necessary_command_values == expected_command_values
+        ), f"Necessary arguments are usually all but the last 3:\n\t{necessary_command_values}\n\t{expected_command_values}"
         output_mapping[file_type] = necessary_command_values
     return output_mapping
 

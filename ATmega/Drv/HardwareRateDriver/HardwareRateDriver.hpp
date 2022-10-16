@@ -23,6 +23,7 @@ namespace Arduino {
     #else
             HardwareRateDriver(U32 intervalMs);
     #endif
+            HardwareRateDriver(const char* compName);
             /**
              * Starts this driver, kicking off the hardware interrupt or the Linux
              * task that virtualizes this driver.
@@ -52,6 +53,7 @@ namespace Arduino {
             static HardwareRateDriver* s_driver;
             //!< Static callback to the ISR triggered via a timer
             static void s_timerISR();
+            void configure(U32 intervalMs);
     };
 }
 #endif

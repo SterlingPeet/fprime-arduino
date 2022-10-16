@@ -47,11 +47,11 @@
 //    fprime requires platform implementors to define logical types for their
 //    system. The list of logical types can be found in the document:
 //    docs/Design/numerical-types.md with the names of the form "Platform*"
-typedef int16_t PlatformIntType;
-#define PRI_PlatformIntType "d"
+typedef int32_t PlatformIntType;
+#define PRI_PlatformIntType "ld"
 
-typedef uint16_t PlatformUIntType;
-#define PRI_PlatformUIntType "ud"
+typedef uint32_t PlatformUIntType;
+#define PRI_PlatformUIntType "lu"
 
 typedef PlatformIntType PlatformIndexType;
 #define PRI_PlatformIndexType PRI_PlatformIntType

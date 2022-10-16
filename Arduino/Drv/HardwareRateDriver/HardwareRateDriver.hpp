@@ -16,9 +16,20 @@ namespace Arduino {
              * Construct the rate driver. Takes in a name (if configured) and a
              * rate at witch to drive.
              * \param const char* compName: name of the component (only supply if configured)
+             */
+            HardwareRateDriver(const char* compName);
+
+            //! Initialize object HardwareRateDriver
+            //!
+            void init(const NATIVE_INT_TYPE instance /*!< The instance number*/
+            );
+
+            /**
+             * Configure theis component with the interval time in milliseconds.
              * \param U32 intervalMs: interval to ping in milliseconds
              */
-            HardwareRateDriver(const char* compName); // TODO: config, U32 intervalMs);
+            void configure(U32 intervalMs);
+
             /**
              * Starts this driver, kicking off the hardware interrupt or the Linux
              * task that virtualizes this driver.
