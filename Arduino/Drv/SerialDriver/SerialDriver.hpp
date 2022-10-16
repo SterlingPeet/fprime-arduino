@@ -28,8 +28,7 @@ namespace Arduino {
       //! Construct object SerialDriver
       //!
       SerialDriverComponentImpl(
-          const char *const compName, /*!< The component name*/
-          NATIVE_UINT_TYPE portNumber
+          const char* compName /*!< The component name*/
       );
 
       //! Initialize object SerialDriver

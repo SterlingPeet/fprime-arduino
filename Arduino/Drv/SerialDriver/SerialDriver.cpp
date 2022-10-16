@@ -16,11 +16,10 @@ namespace Arduino {
 
   SerialDriverComponentImpl ::
     SerialDriverComponentImpl(
-        const char *const compName,
-        NATIVE_UINT_TYPE portNum
+        const char* compName
     ) :
       SerialDriverComponentBase(compName),
-      m_port_number(portNum),
+      m_port_number(0), // TODO: Should be configurable
       m_port_pointer(static_cast<POINTER_CAST>(NULL)),
       m_local_buffer(m_data, SERIAL_BUFFER_SIZE)
   {
