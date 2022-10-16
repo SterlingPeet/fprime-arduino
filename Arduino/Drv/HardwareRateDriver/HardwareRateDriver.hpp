@@ -18,7 +18,7 @@ namespace Arduino {
              * \param const char* compName: name of the component (only supply if configured)
              * \param U32 intervalMs: interval to ping in milliseconds
              */
-            HardwareRateDriver(const char* compName, U32 intervalMs);
+            HardwareRateDriver(const char* compName); // TODO: config, U32 intervalMs);
             /**
              * Starts this driver, kicking off the hardware interrupt or the Linux
              * task that virtualizes this driver.

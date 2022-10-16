@@ -8,9 +8,9 @@ namespace Arduino {
 
 HardwareRateDriver* HardwareRateDriver::s_driver = NULL;
 
-    HardwareRateDriver::HardwareRateDriver(const char* compName, U32 intervalMs) :
+    HardwareRateDriver::HardwareRateDriver(const char* compName) : // , U32 intervalMs) :
         HardwareRateDriverComponentBase(compName),
-        m_interval(intervalMs)
+        m_interval(100)  // m_interval(intervalMs)
     {
         s_driver = this;
     }
