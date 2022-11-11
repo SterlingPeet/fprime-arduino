@@ -7,15 +7,19 @@
 # @author lestarch
 ####
 cmake_minimum_required(VERSION 3.16)
-find_program(PYTHON NAMES python3 python)
-if (NOT PYTHON)
-    message(FATAL_ERROR "Python3 is required to be on path for arduino-support toolchain")
-elseif (NOT DEFINED ARDUINO_FQBN)
+
+if (NOT DEFINED ARDUINO_FQBN)
     message(FATAL_ERROR "Variable ARDUINO_FQDN must be set to use arduino-support")
 endif()
+
+find_program(ARDUINO_CLI_WRAPPER "arduino-cli-wrapper")
+if (NOT ARDUINO_CLI_WRAPPER)
+    message(FATAL_ERROR "The arduino-cli-wrapper is required to build with this toolchain: https://github.com/SterlingPeet/arduino-cli-cmake-wrapper")
+endif()
+
 # Execute the python wrapper
 execute_process(COMMAND
-        "${PYTHON}" "${CMAKE_CURRENT_LIST_DIR}/arduino-cli-wrapper.py" -b "${ARDUINO_FQBN}" -o "${CMAKE_BINARY_DIR}"
+    "${ARDUINO_CLI_WRAPPER}" -b "${ARDUINO_FQBN}" -o "${CMAKE_BINARY_DIR}"
     OUTPUT_VARIABLE WRAPPER_OUTPUT
     RESULT_VARIABLE RET_CODE
 )
