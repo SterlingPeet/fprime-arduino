@@ -32,6 +32,7 @@ list(POP_FRONT WRAPPER_OUTPUT CMAKE_CXX_COMPILER)
 list(POP_FRONT WRAPPER_OUTPUT CMAKE_CXX_FLAGS_INIT)
 list(POP_FRONT WRAPPER_OUTPUT CMAKE_LINKER)
 list(POP_FRONT WRAPPER_OUTPUT CMAKE_EXE_LINKER_FLAGS_INIT)
+set_property(GLOBAL PROPERTY ARDUINO_FINAL_COMMANDS "${WRAPPER_OUTPUT}")
 
 # Convert flag | separated lists to expected ' ' separated lists
 string(REPLACE "|" " " CMAKE_ASM_FLAGS_INIT "${CMAKE_ASM_FLAGS_INIT}")
@@ -52,3 +53,17 @@ endif()
 # Establish a link library for the arduino core
 link_libraries("${ARDUINO_CORE_PATH}")
 set(FPRIME_ARDUINO TRUE)
+
+
+#### Finalize Function ####
+function(finalize_arduino_executable TARGET_NAME)
+    get_property(FINALIZE_COMMANDS GLOBAL PROPERTY ARDUINO_FINAL_COMMANDS)
+    set(COMMAND_SET_ARGUMENTS)
+    while(FINALIZE_COMMANDS)
+        list(POP_FRONT FINALIZE_COMMANDS COMMAND_SET)
+	string(REPLACE "<INPUT>" "$<TARGET_FILE:${TARGET_NAME}>" COMMAND_SET_WITH_INPUT "${COMMAND_SET}")
+	string(REPLACE "|" ";" COMMAND_SET_LIST "${COMMAND_SET_WITH_INPUT}")
+	list(APPEND COMMAND_SET_ARGUMENTS COMMAND ${COMMAND_SET_LIST})
+    endwhile(FINALIZE_COMMANDS)
+    add_custom_command(TARGET "${TARGET_NAME}" POST_BUILD ${COMMAND_SET_ARGUMENTS})
+endfunction(finalize_arduino_executable)

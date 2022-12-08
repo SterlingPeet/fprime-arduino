@@ -40,7 +40,7 @@ def make_sketch(directory: Path) -> Dict[str, Path]:
         path.touch()
     # Create main sketch as an ino file such that it is a valid sketch
     with open((directory / f"{ directory.name }.ino"), "w") as file_handle:
-        file_handle.write("#include <TimerOne.h>\nvoid setup() {}\nvoid loop() {}")
+        file_handle.write("void setup() {}\nvoid loop() {}")
     return mappings
 
 
@@ -60,7 +60,7 @@ def compile_sketch(board: str, directory: Path) -> str:
         standard out of the compiled sketch run
     """
     process_return = subprocess.run(
-        ["arduino-cli", "compile", "-v", "--clean", "-b", board, "--build-property", "build.extra_flags=-DTIMER1_A_PIN=13 -DTIMSK1=TIMSK", str(directory)],
+        ["arduino-cli", "compile", "-v", "--clean", "-b", board, str(directory)],
         check=True,
         text=True,
         stdout=subprocess.PIPE,
@@ -161,6 +161,31 @@ def parse_linker_commands(output_lines: List[str]):
     return core_path, necessary_command_values
 
 
+def parse_finalization_commands(output_lines: List[str]):
+    """Parse out the finalization steps of the build process
+
+    This function will parse matching commands after the linker step such that they can be replayed.
+
+    Args:
+        output_lines: lines from arduino CLI
+    Return:
+        List of post linker commands filtered for input / outputs
+    """
+    matching_tokens = ["objcopy", "size"]  # Keep objcopy and size tokens
+    # Find lines that match the linking call
+    post_linking_lines = lines_between(output_lines, "Linking everything together...")
+    # Find lines where the list of matches on that line across possible tokens is a non-empty list
+    post_linking_lines = [line for line in post_linking_lines if [token for token in matching_tokens if token in line]]
+    if not post_linking_lines:
+        return []  # No follow-up lines
+    post_shell_split_sets = [shlex.split(line) for line in post_linking_lines]
+    post_shell_split_sets = [split_set for split_set in post_shell_split_sets if split_set]
+    objcopy_sets = [split_set for split_set in post_shell_split_sets if "objcopy" in split_set[0]]
+    objcopy_sets = [set[:-2] + ["<INPUT>", f"<INPUT>{Path(set[-1]).suffix}"] for set in objcopy_sets]
+
+    size_sets = [split_set[:-1] + ["<INPUT>"] for split_set in post_shell_split_sets if "size" in split_set[0]]
+    return objcopy_sets + size_sets
+
 def parse_arguments(arguments: List[str]) -> argparse.Namespace:
     """Parse input arguments to influence the execution.
 
@@ -205,6 +230,7 @@ def main(arguments: List[str]):
             output_lines = compile_output.split("\n")
             command_mappings = parse_compilation_commands(output_lines, mappings)
             core_path, linker_args = parse_linker_commands(output_lines)
+            post_commands = parse_finalization_commands(output_lines)
 
             core_destination = arguments.output / core_path.name
             shutil.copy2(core_path, core_destination)
@@ -216,6 +242,8 @@ def main(arguments: List[str]):
                 print("|".join(command_mappings[output_type][1:]), end=";")
             print(linker_args[0], end=";")
             print("|".join(linker_args[1:]), end=";")
+            for command in post_commands:
+                print("|".join(command), end=";")
         except Exception as exc:
             print(f"[ERROR] Problem occurred while mining Arduino. {exc}", file=sys.stderr)
             return 1

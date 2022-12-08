@@ -9,8 +9,9 @@
 set(CMAKE_SYSTEM_NAME "ArduinoFw")
 set(CMAKE_SYSTEM_PROCESSOR "arm")
 set(CMAKE_CROSSCOMPILING 1)
+set(FPRIME_USE_BAREMETAL_SCHEDULER ON)
 
-# Teensy 31 is used to compile for the teensy 3.2 board
-set(ARDUINO_FQBN "teensy:avr:teensy31")
+# Teensy 40 is used to compile for the teensy 4.1 board
+set(ARDUINO_FQBN "teensy:avr:teensy41")
 # Run the base arduino setup which should detect settings!
 include("${CMAKE_CURRENT_LIST_DIR}/support/arduino-support.cmake")

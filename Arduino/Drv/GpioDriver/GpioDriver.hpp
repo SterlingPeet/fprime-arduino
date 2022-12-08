@@ -12,13 +12,12 @@
 namespace Arduino {
 
 class GpioDriver : public GpioDriverComponentBase {
+  public:
     //! configure GPIO
     enum GpioDirection {
         IN,   //!< input
         OUT,  //!< output
     };
-
-  public:
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
     // ----------------------------------------------------------------------

@@ -3,6 +3,8 @@
 // \author lestarch
 // \brief  Compatibility header for use of Arduino.h in fprime-arduino
 // ======================================================================
+#ifndef ARDUINOBLINK_FPRIMEARDUINO_HPP
+#define ARDUINOBLINK_FPRIMEARDUINO_HPP
 #include <Arduino.h>
 /**
  * Arduino.h often uses #define constants to setup values like HIGH and LOW. This means that other tokens that contain
@@ -29,7 +31,5 @@ enum ARDUINO_DEFINITION_REMAP {
 #undef HIGH
 #undef LOW
 
-#ifndef ARDUINOBLINK_FPRIMEARDUINO_HPP
-#define ARDUINOBLINK_FPRIMEARDUINO_HPP
 
 #endif  // ARDUINOBLINK_FPRIMEARDUINO_HPP
