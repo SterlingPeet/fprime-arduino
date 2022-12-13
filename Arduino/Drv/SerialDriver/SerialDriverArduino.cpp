@@ -28,7 +28,7 @@ void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
             //     m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial3);
             //     break;
     }
-//    reinterpret_cast<Stream*>(m_port_pointer);
+    this->ready_out(0);
 }
 
 // ----------------------------------------------------------------------
