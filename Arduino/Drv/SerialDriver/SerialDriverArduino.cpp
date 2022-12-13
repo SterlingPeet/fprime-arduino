@@ -8,16 +8,18 @@
 #include <FprimeArduino.hpp>
 #include <Os/Log.hpp>
 #include "Fw/Types/BasicTypes.hpp"
-
+#include "Fw/Types/Assert.hpp"
 namespace Arduino {
 
 void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
     switch (port_number) {
         case 0:
-            m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial);
+            m_port_pointer = reinterpret_cast<Stream*>(&Serial);
+            Serial.begin(baud);
             break;
         case 1:
-            m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial1);
+            m_port_pointer = reinterpret_cast<Stream*>(&Serial1);
+            Serial1.begin(baud);
             break;
             // case 2:
             //     m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial2);
@@ -26,7 +28,7 @@ void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
             //     m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial3);
             //     break;
     }
-    reinterpret_cast<HardwareSerial*>(m_port_pointer)->begin(baud);
+//    reinterpret_cast<Stream*>(m_port_pointer);
 }
 
 // ----------------------------------------------------------------------
@@ -34,12 +36,13 @@ void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
 // ----------------------------------------------------------------------
 
 void SerialDriver ::write_data(Fw::Buffer& fwBuffer) {
-    reinterpret_cast<HardwareSerial*>(m_port_pointer)
+    FW_ASSERT(m_port_pointer != 0);
+    reinterpret_cast<Stream*>(m_port_pointer)
         ->write(reinterpret_cast<U8*>(fwBuffer.getData()), fwBuffer.getSize());
 }
 
 void SerialDriver ::read_data(Fw::Buffer& fwBuffer) {
-    HardwareSerial* serial_ptr = reinterpret_cast<HardwareSerial*>(m_port_pointer);
+    Stream* serial_ptr = reinterpret_cast<Stream*>(m_port_pointer);
     int byte = 0;
     NATIVE_UINT_TYPE count = 0;
     U8* raw_data = reinterpret_cast<U8*>(fwBuffer.getData());

@@ -54,16 +54,6 @@ class SerialDriver : public SerialDriverComponentBase {
     Drv::SendStatus send_handler(const NATIVE_INT_TYPE portNum, /*!< The port number*/
                                  Fw::Buffer& fwBuffer) override;
 
-    //! Handler implementation for readPoll
-    //!
-    Drv::PollStatus poll_handler(const NATIVE_INT_TYPE portNum, /*!< The port number*/
-                                 Fw::Buffer& fwBuffer) override;
-
-    //! Handler implementation for recvReturn
-    //!
-    void recvReturn_handler(const NATIVE_INT_TYPE portNum, /*!< The port number*/
-                            Fw::Buffer& fwBuffer) override;
-
     //! Handler implementation for schedIn
     //!
     void schedIn_handler(const NATIVE_INT_TYPE portNum, /*!< The port number*/
@@ -73,11 +63,7 @@ class SerialDriver : public SerialDriverComponentBase {
     //! Port number to open
     NATIVE_UINT_TYPE m_port_number;
     //! Stores the open serial port, POINTER_CAST so Linux and Ardunio may use different types
-    POINTER_CAST m_port_pointer;
-    //! Data store for self-generated serial data
-    U8 m_data[SERIAL_BUFFER_SIZE];  // Max data in 1/10th second at 115200
-    //! Buffer to wrap
-    Fw::Buffer m_local_buffer;
+    void* m_port_pointer;
 };
 
 }  // end namespace Arduino

@@ -30,3 +30,4 @@ void GpioDriver ::gpioRead_handler(const NATIVE_INT_TYPE portNum, Fw::Logic& sta
 
 void GpioDriver ::gpioWrite_handler(const NATIVE_INT_TYPE portNum, const Fw::Logic& state) {
 }
+}
