@@ -74,6 +74,8 @@ function(finalize_arduino_executable TARGET_NAME)
 	string(REPLACE "|" ";" COMMAND_SET_LIST "${COMMAND_SET_WITH_INPUT}")
 	list(APPEND COMMAND_SET_ARGUMENTS COMMAND ${COMMAND_SET_LIST})
     endwhile(FINALIZE_COMMANDS)
-    add_custom_command(TARGET "${TARGET_NAME}" POST_BUILD ${COMMAND_SET_ARGUMENTS})
-    install(FILES "$<TARGET_FILE:${TARGET_NAME}>.hex" DESTINATION ${TOOLCHAIN_NAME}/bin)
+    list(APPEND COMMAND_SET_ARGUMENTS COMMAND "${CMAKE_COMMAND}" "-E" "copy_if_different" "$<TARGET_FILE:${TARGET_NAME}>.hex" "${CMAKE_INSTALL_PREFIX}/${TOOLCHAIN_NAME}/bin")
+    add_custom_command(
+        TARGET "${TARGET_NAME}" POST_BUILD ${COMMAND_SET_ARGUMENTS}
+    )
 endfunction(finalize_arduino_executable)
