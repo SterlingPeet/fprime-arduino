@@ -86,6 +86,29 @@ def lines_between(output_lines: List[str], start_phrase: str, end_phrase: str = 
     return output_lines[(start_index + 1) : stop_index]
 
 
+def parse_archive_commands(output_lines: List[str], token: str, removal_count: int) -> Dict[str, List[str]]:
+    """Parse compilation commands and flags per type
+
+    This function will parse out each command needed to construct each .a archive. These
+    commands are parsed in the section after the "Compiling core..." message
+
+    Args:
+        output_lines: lines of the output of arduino-cli
+        token: ar or ranlib to search for
+        removal_count: count of items to strip off end
+
+    Return:
+        tuple of ar commands and args or ranlib and args
+    """
+    archive_lines = lines_between(output_lines, "Compiling core...", "Linking everything together...")
+    shell_splits = [shlex.split(line) for line in archive_lines]
+    shell_splits = [splits for splits in shell_splits if (splits + [""])[0].endswith(token)]
+    if not shell_splits:
+        return ("", "")
+    shell_split = shell_splits[0]
+    return shell_split[0], shell_split[1:-1*removal_count]
+
+
 def parse_compilation_commands(output_lines: List[str], mapping: Dict[str, Path]) -> Dict[str, List[str]]:
     """Parse compilation commands and flags per type
 
@@ -230,6 +253,8 @@ def main(arguments: List[str]):
             output_lines = compile_output.split("\n")
             command_mappings = parse_compilation_commands(output_lines, mappings)
             core_path, linker_args = parse_linker_commands(output_lines)
+            ar, ar_args = parse_archive_commands(output_lines, "ar", 2)
+            ranlib, ranlib_args = parse_archive_commands(output_lines, "ranlib", 1)
             post_commands = parse_finalization_commands(output_lines)
 
             core_destination = arguments.output / core_path.name
@@ -240,6 +265,10 @@ def main(arguments: List[str]):
             for output_type in ["S", "c", "cpp"]:
                 print(command_mappings[output_type][0], end=";")
                 print("|".join(command_mappings[output_type][1:]), end=";")
+            print(ar, end=";")
+            print("|".join(ar_args), end=";")
+            print(ranlib, end=";")
+            print("|".join(ranlib_args), end=";")
             print(linker_args[0], end=";")
             print("|".join(linker_args[1:]), end=";")
             for command in post_commands:
