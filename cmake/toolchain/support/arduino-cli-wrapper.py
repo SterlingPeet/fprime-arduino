@@ -40,7 +40,7 @@ def make_sketch(directory: Path) -> Dict[str, Path]:
         path.touch()
     # Create main sketch as an ino file such that it is a valid sketch
     with open((directory / f"{ directory.name }.ino"), "w") as file_handle:
-        file_handle.write("#include <Wire.h>\nvoid setup() {}\nvoid loop() {}")
+        file_handle.write("#include <Wire.h>\n#include <SPI.h>\nvoid setup() {}\nvoid loop() {}")
     return mappings
 
 
