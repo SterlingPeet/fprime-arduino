@@ -11,8 +11,10 @@
 set(CMAKE_SYSTEM_NAME "ArduinoFw")
 set(CMAKE_SYSTEM_PROCESSOR "avr")
 set(CMAKE_CROSSCOMPILING 1)
+set(FPRIME_USE_BAREMETAL_SCHEDULER ON)
+set(ARDUINO_LIBRARIES "SPI.h" "Wire.h" "TimerOne.h")
+set(ARDUINO_BUILD_PROPERTIES "build.extra_flags=-DTIMER1_A_PIN=13 -DTIMSK1=TIMSK")
 
-# Teensy 31 is used to compile for the ATmega128
 set(ARDUINO_FQBN "MegaCore:avr:128")
 # Run the base arduino setup which should detect settings!
 include("${CMAKE_CURRENT_LIST_DIR}/support/arduino-support.cmake")
