@@ -10,7 +10,6 @@ set(CMAKE_SYSTEM_NAME "ArduinoFw")
 set(CMAKE_SYSTEM_PROCESSOR "arm")
 set(CMAKE_CROSSCOMPILING 1)
 set(FPRIME_USE_BAREMETAL_SCHEDULER ON)
-set(ARDUINO_LIBRARIES "SPI.h" "Wire.h")
 set(ARDUINO_BUILD_PROPERTIES)
 
 # Teensy 40 is used to compile for the teensy 4.1 board
