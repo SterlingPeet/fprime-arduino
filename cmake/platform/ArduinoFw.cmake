@@ -1,7 +1,7 @@
 set(FPRIME_USE_BAREMETAL_SCHEDULER ON)
 if(NOT DEFINED ARDUINO_FQBN)
     message(FATAL_ERROR "Must defined arduino FQBN")
-elseif(ARDUINO_FQBN MATCHES "teensy:avr:.*")
+elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
     set(ARDUINO_TYPES_DIR "${CMAKE_CURRENT_LIST_DIR}/types/teensy") 
 else()
     set(ARDUINO_TYPES_DIR "${CMAKE_CURRENT_LIST_DIR}/types/basic") 

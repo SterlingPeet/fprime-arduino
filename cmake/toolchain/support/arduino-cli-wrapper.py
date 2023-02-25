@@ -7,6 +7,8 @@ file in Arduino.  This allows the program to know how arduino should compile C a
 """
 import argparse
 import itertools
+import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -22,6 +24,15 @@ HELP_TEXT = """Tool used to parse settings from a compilation run of Arduino CLI
 This tool will run a test compilation 
 """
 
+
+def get_path_from_flagged(item: str) -> Path:
+    """ Flag and path item to path """
+    if item.startswith("-"):
+        try:
+            return Path(item[item.index("=") +1:])
+        except ValueError:
+            return Path(item[2:])
+    return Path(item)
 
 def make_sketch(directory: Path, libraries: List[str]) -> Dict[str, Path]:
     """Create a sketch folder with at least a C, C++, and assembly file
@@ -156,6 +167,7 @@ def linker_cli_tokens(output_lines: List[str]):
     """ Return the linker command line tokens """
     # Find lines that match the linking call
     linking_lines = lines_between(output_lines, "Linking everything together...")
+    linking_lines = [linking_line for linking_line in linking_lines if "core.a" in linking_line]
     if not linking_lines:
         raise Exception(f"Failed to find linking lines")
     linker_shell_split = shlex.split(linking_lines[0])
@@ -179,7 +191,7 @@ def parse_prebuild_code(output_lines: List[str], sketch_name: str):
     return [core_path] + [Path(obj) for obj in core_library_code]
 
 
-def parse_linker_commands(output_lines: List[str]) -> List[str]:
+def parse_linker_commands(output_lines: List[str], output_directory: Path) -> List[str]:
     """Parse out the linker and post-linker commands
 
     This function will parse out the linker command as well as the post linker command steps. These can then be used to
@@ -191,6 +203,7 @@ def parse_linker_commands(output_lines: List[str]) -> List[str]:
     Return:
         List of post linker commands filtered for input / outputs
     """
+    regex = re.compile(rf"{os.sep}.*{os.sep}arduino-sketch[^{os.sep}]*{os.sep}")
     linker_shell_split = linker_cli_tokens(output_lines)
     def filter_function(item: str) -> bool:
         """Filters out -o flag, input and output specifiers"""
@@ -201,8 +214,9 @@ def parse_linker_commands(output_lines: List[str]) -> List[str]:
             and not item.endswith("core.a")
             and not item.startswith("-L")
         )
-    necessary_command_values = list(filter(filter_function, linker_shell_split))
-    return necessary_command_values
+    necessary_command_values = filter(filter_function, linker_shell_split)
+    rewritten_values = [regex.sub(str(output_directory) + os.sep, value) for value in necessary_command_values]
+    return rewritten_values
 
 
 def parse_finalization_commands(output_lines: List[str]):
@@ -215,26 +229,32 @@ def parse_finalization_commands(output_lines: List[str]):
     Return:
         List of post linker commands filtered for input / outputs
     """
-    matching_tokens = ["objcopy", "size"]  # Keep objcopy and size tokens
+    reg = re.compile(r".*\.ino(\.elf)?")
+    excludes = ["g++", "gcc", "ld"]  # Keep objcopy and size tokens
     # Find lines that match the linking call
     post_linking_lines = lines_between(output_lines, "Linking everything together...")
     # Find lines where the list of matches on that line across possible tokens is a non-empty list
-    post_linking_lines = [line for line in post_linking_lines if [token for token in matching_tokens if token in line]]
+    post_linking_lines = [line for line in post_linking_lines if [token for token in excludes if token not in line]]
     if not post_linking_lines:
         return []  # No follow-up lines
     post_shell_split_sets = [shlex.split(line) for line in post_linking_lines]
+    post_shell_split_sets = [split for split in post_shell_split_sets if Path((split + [""])[0]).is_file()]
     post_shell_split_sets = [split_set for split_set in post_shell_split_sets if split_set]
-    objcopy_sets = [split_set for split_set in post_shell_split_sets if "objcopy" in split_set[0]]
-    objcopy_sets = [set[:-2] + ["<INPUT>", f"<INPUT>{Path(set[-1]).suffix}"] for set in objcopy_sets]
-
-    size_sets = [split_set[:-1] + ["<INPUT>"] for split_set in post_shell_split_sets if "size" in split_set[0]]
-    return objcopy_sets + size_sets
+    post_shell_split_sets = [[reg.sub("<INPUT>", item) for item in split_set] for split_set in post_shell_split_sets]
+    return post_shell_split_sets
 
 
-def detect_build_settings(output_lines: List[str], mappings: Dict[str, Path]):
+def detect_copy_files(output_lines: List[str], names: List[str]):
+    """ All copy files """
+    shell_split = [shlex.split(line) for line in output_lines]
+    copies =  [item for item in itertools.chain.from_iterable(shell_split) if Path(item).name in names]
+    return [get_path_from_flagged(item) for item in copies]
+
+
+def detect_build_settings(output_lines: List[str], mappings: Dict[str, Path], output_directory:Path):
     """ Detect the build settings """
     command_mappings = parse_compilation_commands(output_lines, mappings)
-    linker_args = parse_linker_commands(output_lines)
+    linker_args = parse_linker_commands(output_lines, output_directory)
     ar, ar_args = parse_archive_commands(output_lines, "ar", 2)
     ranlib, ranlib_args = parse_archive_commands(output_lines, "ranlib", 1)
     post_commands = parse_finalization_commands(output_lines)
@@ -302,6 +322,14 @@ def parse_arguments(arguments: List[str]) -> argparse.Namespace:
         required=False,
     )
     parser.add_argument(
+        "-c",
+        "--copy",
+        type=str,
+        nargs="*",
+        help="List of extra filenames to copy and remap to new directory in generate step",
+        required=False,
+    )
+    parser.add_argument(
         "--properties",
         type=str,
         nargs="*",
@@ -313,7 +341,7 @@ def parse_arguments(arguments: List[str]) -> argparse.Namespace:
         "--output",
         type=Path,
         help="Output destination for the pre-compiled arduino core",
-        required=False,
+        required=True,
     )
     return parser.parse_args(arguments)
 
@@ -330,19 +358,21 @@ def main(arguments: List[str]):
 
             output_lines = compile_output.split("\n")
             if arguments.detect_settings:
-                detect_build_settings(output_lines, mappings)
+                detect_build_settings(output_lines, mappings, arguments.output)
             if arguments.includes:
                 print(";".join(parse_include_directories(output_lines)), end="")
             if arguments.generate_code:
                 code_units = parse_prebuild_code(output_lines, directory.name)
-                if arguments.output:
-                    arguments.output.mkdir(exist_ok=True)
-                    code_destinations = [arguments.output / unit.name for unit in code_units]
-                    for unit, dest in zip(code_units, code_destinations):
-                        shutil.copy2(unit, dest)
-                    print(";".join([str(dest) for dest in code_destinations]), end="")
+                arguments.output.mkdir(exist_ok=True)
+                code_destinations = [arguments.output / unit.name for unit in code_units]
+                copies = detect_copy_files(output_lines, arguments.copy) if arguments.copy else []
+                copy_destinations = [arguments.output / copy.name for copy in copies]
+                for unit, dest in list(zip(code_units, code_destinations)) + list(zip(copies, copy_destinations)):
+                    shutil.copy2(unit, dest)
+                print(";".join([str(dest) for dest in code_destinations]), end="")
         except Exception as exc:
             print(f"[ERROR] Problem occurred while mining Arduino. {exc}", file=sys.stderr)
+            raise
             return 1
     return 0
 

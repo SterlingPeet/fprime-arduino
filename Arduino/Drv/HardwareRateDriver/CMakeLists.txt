@@ -1,23 +1,31 @@
 ####
 # F prime CMakeLists.txt:
 #
-# SOURCE_FILES: combined list of source and autocoding diles
+# SOURCE_FILES: combined list of source and autocoding files
 # MOD_DEPS: (optional) module dependencies
 #
 ####
+include(utilities)
 set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriver.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriver.cpp"
 )
-message(STATUS "<${FPRIME_ARDUINO}> and <${CMAKE_SYSTEM_PROCESSOR}>")
+starts_with(IS_TEENSY "${ARDUINO_FQBN}" "teensy")
+starts_with(IS_MBED "${ARDUINO_FQBN}" "arduino:mbed")
 # Check the Linux build
-if (FPRIME_ARDUINO AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverAvr.cpp")
-elseif (FPRIME_ARDUINO AND CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
+if (NOT FPRIME_ARDUINO)
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverLinux.cpp")
+elseif (IS_TEENSY)
     include_arduino_libraries("IntervalTimer")
     list(APPEND MOD_DEPS "IntervalTimer")
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverArm.cpp")
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverTeensy.cpp")
+elseif (IS_MBED)
+    include_arduino_libraries("mbed")
+    list(APPEND MOD_DEPS "mbed")
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverMbed.cpp")
 else()
-    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverLinux.cpp")
+    include_arduino_libraries("TimerOne")
+    list(APPEND MOD_DEPS "TimerOne")
+    list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/HardwareRateDriverAvr.cpp")
 endif()
 register_fprime_module()

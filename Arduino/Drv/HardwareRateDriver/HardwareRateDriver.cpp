@@ -28,11 +28,11 @@ void HardwareRateDriver::s_timer(void* comp) {
     Svc::TimerVal now;
     now.take();
 #ifdef ARDUINO
-    sei();  // Enable interrupts so UART RX interrupt handler can receive incoming bytes during remainder of this ISR
+    __enable_irq(); //sei();  // Enable interrupts so UART RX interrupt handler can receive incoming bytes during remainder of this ISR
 #endif
     HardwareRateDriver* driver = reinterpret_cast<HardwareRateDriver*>(comp);
     // Check if it is time to run the group
-    driver->CycleOut_out(0, now);
+    //driver->CycleOut_out(0, now);
     driver->m_last = now;
 }
 }  // namespace Arduino
