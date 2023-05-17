@@ -179,13 +179,16 @@ function(finalize_arduino_executable TARGET_NAME)
     set(COMMAND_SET_ARGUMENTS)
     foreach(COMMAND IN LISTS POST_COMMANDS)
         string(REPLACE "<TARGET_PATH>" "$<TARGET_FILE:${TARGET_NAME}>" COMMAND_WITH_INPUT "${COMMAND}")
+        string(REPLACE "<TARGET_NAME>" "$<TARGET_FILE_NAME:${TARGET_NAME}>" COMMAND_WITH_INPUT "${COMMAND_WITH_INPUT}")
+        string(REPLACE "<TARGET_DIRECTORY>" "$<TARGET_FILE_DIR:${TARGET_NAME}>" COMMAND_WITH_INPUT "${COMMAND_WITH_INPUT}")
+        string(REPLACE " " ";" COMMAND_WITH_INPUT "${COMMAND_WITH_INPUT}")
         list(APPEND COMMAND_SET_ARGUMENTS COMMAND ${COMMAND_WITH_INPUT})
     endforeach()
     message(STATUS ">>>>>${COMMAND_SET_ARGUMENTS}")
     list(APPEND COMMAND_SET_ARGUMENTS COMMAND "${CMAKE_COMMAND}" "-E" "copy_if_different" "$<TARGET_FILE:${TARGET_NAME}>*" "${CMAKE_INSTALL_PREFIX}/${TOOLCHAIN_NAME}/bin")
-    #add_custom_command(
-    #    TARGET "${TARGET_NAME}" POST_BUILD ${COMMAND_SET_ARGUMENTS}
-    #)
+    add_custom_command(
+        TARGET "${TARGET_NAME}" POST_BUILD ${COMMAND_SET_ARGUMENTS}
+    )
 endfunction(finalize_arduino_executable)
 
 # Setup the arduino build settings, and output when debugging

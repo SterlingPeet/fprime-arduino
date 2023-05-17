@@ -9,7 +9,7 @@ namespace Arduino {
 HardwareRateDriver* HardwareRateDriver::s_driver = NULL;
 
 HardwareRateDriver::HardwareRateDriver(const char* compName)
-    : HardwareRateDriverComponentBase(compName), m_interval(FpLimits::U32_MAX) {
+    : HardwareRateDriverComponentBase(compName), m_interval(std::numeric_limits<U32>::max()) {
     s_driver = this;
 }
 

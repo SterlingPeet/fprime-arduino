@@ -14,11 +14,11 @@ namespace Arduino {
 void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
     switch (port_number) {
         case 0:
-            m_port_pointer = reinterpret_cast<Stream*>(&Serial);
+            m_port_pointer = reinterpret_cast<Stream *>(&Serial);
             Serial.begin(baud);
             break;
         case 1:
-            m_port_pointer = reinterpret_cast<Stream*>(&Serial1);
+            m_port_pointer = reinterpret_cast<Stream *>(&Serial1);
             Serial1.begin(baud);
             break;
             // case 2:
@@ -28,7 +28,9 @@ void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
             //     m_port_pointer = reinterpret_cast<POINTER_CAST>(&Serial3);
             //     break;
     }
-    this->ready_out(0);
+    if (this->isConnected_ready_OutputPort(0)) {
+        this->ready_out(0);
+    }
 }
 
 // ----------------------------------------------------------------------
