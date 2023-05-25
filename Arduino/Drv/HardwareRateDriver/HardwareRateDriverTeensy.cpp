@@ -1,5 +1,5 @@
 #include <FpConfig.hpp>
-#include <ATmega/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
+#include <Arduino/Drv/HardwareRateDriver/HardwareRateDriver.hpp>
 #include <Arduino.h>
 #include <Fw/Logger/Logger.hpp>
 

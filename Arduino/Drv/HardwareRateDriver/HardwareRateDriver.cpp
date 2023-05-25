@@ -32,7 +32,10 @@ void HardwareRateDriver::s_timer(void* comp) {
 #endif
     HardwareRateDriver* driver = reinterpret_cast<HardwareRateDriver*>(comp);
     // Check if it is time to run the group
-    driver->CycleOut_out(0, now);
+    if(driver->isConnected_CycleOut_OutputPort(0))
+    {
+        driver->CycleOut_out(0, now);
+    }
     driver->m_last = now;
 }
 }  // namespace Arduino
