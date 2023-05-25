@@ -31,6 +31,11 @@ namespace Arduino {
             void configure(U32 intervalMs);
 
             /**
+             * Cycle simulated timer.
+             */
+            void cycle();
+
+            /**
              * Starts this driver, kicking off the hardware interrupt or the Linux
              * task that virtualizes this driver.
              */

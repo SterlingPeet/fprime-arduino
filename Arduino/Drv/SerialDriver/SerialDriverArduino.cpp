@@ -9,6 +9,7 @@
 #include <Os/Log.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include "Fw/Types/Assert.hpp"
+
 namespace Arduino {
 
 void SerialDriver::configure(FwIndexType port_number, PlatformIntType baud) {
