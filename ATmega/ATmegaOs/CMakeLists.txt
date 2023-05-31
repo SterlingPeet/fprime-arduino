@@ -32,7 +32,6 @@ if (${CMAKE_SYSTEM_NAME_LOWER} STREQUAL "arduino")
         "${FPRIME_FRAMEWORK_PATH}/Os/Baremetal/Task.cpp"
         "${FPRIME_FRAMEWORK_PATH}/Os/Baremetal/File.cpp"
         "${FPRIME_FRAMEWORK_PATH}/Os/Baremetal/FileSystem.cpp"
-        "${FPRIME_FRAMEWORK_PATH}/Os/Baremetal/IntervalTimer.cpp"
         "${FPRIME_FRAMEWORK_PATH}/Os/Baremetal/Mutex.cpp"
         # Non-OS based queue implementations
         "${FPRIME_FRAMEWORK_PATH}/Os/Pthreads/BufferQueueCommon.cpp"
