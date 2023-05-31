@@ -125,16 +125,22 @@ function(setup_arduino_libraries)
     read_json(LIBRARIES "${WRAPPER_OUTPUT}" libraries)
     read_json(OBJECTS "${WRAPPER_OUTPUT}" objects)
 
-    # Setup an extra arduino libraries
-    add_library(fprime_arduino_patcher ${EXTRA_LIBRARY_SOURCE})
-    get_target_property(TARGET_LIBRARIES fprime_arduino_patcher LINK_LIBRARIES)
-    LIST(REMOVE_ITEM TARGET_LIBRARIES fprime_arduino_libraries)
-    LIST(REMOVE_ITEM TARGET_LIBRARIES fprime_arduino_patcher)
-    set_property(TARGET fprime_arduino_patcher PROPERTY LINK_LIBRARIES ${TARGET_LIBRARIES})
+    # Setup arduino missing C/C++ function patch library
+    if (NOT TARGET fprime_arduino_patcher)
+        add_library(fprime_arduino_patcher ${EXTRA_LIBRARY_SOURCE})
+        get_target_property(TARGET_LIBRARIES fprime_arduino_patcher LINK_LIBRARIES)
+        LIST(REMOVE_ITEM TARGET_LIBRARIES fprime_arduino_libraries)
+        LIST(REMOVE_ITEM TARGET_LIBRARIES fprime_arduino_patcher)
+        set_property(TARGET fprime_arduino_patcher PROPERTY LINK_LIBRARIES ${TARGET_LIBRARIES})
+    endif()
 
-    add_library(fprime_arduino_loose_object_library OBJECT IMPORTED GLOBAL)
-    set_target_properties(fprime_arduino_loose_object_library PROPERTIES IMPORTED_OBJECTS "${OBJECTS}")
-    target_include_directories(fprime_arduino_loose_object_library INTERFACE ${INCLUDES})
+    # Setup  library to capture loose object files from arduino-cli compile
+    if (NOT TARGET fprime_arduino_loose_object_library)
+        add_library(fprime_arduino_loose_object_library OBJECT IMPORTED GLOBAL)
+        set_target_properties(fprime_arduino_loose_object_library PROPERTIES IMPORTED_OBJECTS "${OBJECTS}")
+        target_include_directories(fprime_arduino_loose_object_library INTERFACE ${INCLUDES})
+        target_link_libraries(fprime_arduino_libraries INTERFACE fprime_arduino_loose_object_library)
+    endif()
 
     # Import all of the libraries including core
     foreach(BUILT_LIBRARY IN LISTS LIBRARIES)
@@ -146,18 +152,19 @@ function(setup_arduino_libraries)
             get_filename_component(LIBRARY_BASE "${BUILT_LIBRARY}" NAME_WE)
 
             # Add new imported library
-            message(STATUS "Adding Arduino Library: ${LIBRARY_BASE}")
-            add_library(${LIBRARY_BASE} STATIC IMPORTED GLOBAL)
-            set_target_properties(${LIBRARY_BASE} PROPERTIES IMPORTED_LOCATION "${BUILT_LIBRARY}")
-            add_dependencies(${LIBRARY_BASE} fprime_arduino_loose_object_library)
-            target_link_libraries(${LIBRARY_BASE} INTERFACE fprime_arduino_loose_object_library)
+            if (NOT TARGET ${LIBRARY_BASE})
+                message(STATUS "Adding Arduino Library: ${LIBRARY_BASE}")
+                add_library(${LIBRARY_BASE} STATIC IMPORTED GLOBAL)
+                set_target_properties(${LIBRARY_BASE} PROPERTIES IMPORTED_LOCATION "${BUILT_LIBRARY}")
+                add_dependencies(${LIBRARY_BASE} fprime_arduino_loose_object_library)
+                target_link_libraries(${LIBRARY_BASE} INTERFACE fprime_arduino_loose_object_library)
 
-            # Setup detected dependencies to the interface library
-            add_dependencies(fprime_arduino_libraries ${LIBRARY_BASE})
-            target_link_libraries(fprime_arduino_libraries INTERFACE ${LIBRARY_BASE})
+                # Setup detected dependencies to the interface library
+                add_dependencies(fprime_arduino_libraries ${LIBRARY_BASE})
+                target_link_libraries(fprime_arduino_libraries INTERFACE ${LIBRARY_BASE})
+            endif()
         endif()
     endforeach()
-    target_link_libraries(fprime_arduino_libraries INTERFACE fprime_arduino_loose_object_library)
     set(WRAPPER_OUTPUT "${WRAPPER_OUTPUT}" PARENT_SCOPE)
 endfunction(setup_arduino_libraries)
 
