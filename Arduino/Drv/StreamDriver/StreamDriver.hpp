@@ -1,44 +1,41 @@
 // ======================================================================
-// \title  SerialDriverImpl.hpp
+// \title  StreamDriverImpl.hpp
 // \author lestarch
-// \brief  hpp file for SerialDriver component implementation class
+// \brief  hpp file for StreamDriver component implementation class
 // ======================================================================
 
-#ifndef SerialDriver_HPP
-#define SerialDriver_HPP
+#ifndef StreamDriver_HPP
+#define StreamDriver_HPP
 
-#include "Arduino/Drv/SerialDriver/SerialDriverComponentAc.hpp"
+#include "Arduino/Drv/StreamDriver/StreamDriverComponentAc.hpp"
 #include "Os/Task.hpp"
+#include <FprimeArduino.hpp>
 
 namespace Arduino {
-// Allow for setting serial ports from the inputs
+// Allow for setting serial ports on linux from the inputs
 #ifndef ARDUINO
 extern char** SERIAL_PORT;
 #endif
-class SerialDriver : public SerialDriverComponentBase {
+
+class StreamDriver : public StreamDriverComponentBase {
   public:
-    const static FwSizeType SERIAL_BUFFER_SIZE = 64;  // Maximum Arduino Serial buffer size
+    const static FwSizeType SERIAL_BUFFER_SIZE = 64;  // Maximum Arduino buffer size
     // ----------------------------------------------------------------------
     // Construction, initialization, and destruction
     // ----------------------------------------------------------------------
 
-    //! Construct object SerialDriver
+    //! Construct object StreamDriver
     //!
-    SerialDriver(const char* compName /*!< The component name*/
+    StreamDriver(const char* compName /*!< The component name*/
     );
 
-    //! Initialize object SerialDriver
+    //! Destroy object StreamDriver
     //!
-    void init(const NATIVE_INT_TYPE instance /*!< The instance number*/
-              );
-
-    //! Destroy object SerialDriver
-    //!
-    ~SerialDriver(void);
+    ~StreamDriver(void);
 
     //! Configure this port
     //!
-    void configure(FwIndexType port_number, const PlatformIntType baud);
+    void configure(Stream* streamDriver);
 
   private:
     //! Read the actual data
@@ -62,7 +59,7 @@ class SerialDriver : public SerialDriverComponentBase {
 
     //! Port number to open
     NATIVE_UINT_TYPE m_port_number;
-    //! Stores the open serial port, POINTER_CAST so Linux and Ardunio may use different types
+    //! Stores the open stream port, POINTER_CAST so Linux and Ardunio may use different types
     void* m_port_pointer;
 };
 

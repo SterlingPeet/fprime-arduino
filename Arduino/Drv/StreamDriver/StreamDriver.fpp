@@ -1,6 +1,6 @@
 module Arduino {
 
-  passive component SerialDriver {
+  passive component StreamDriver {
 
     @ Polling for receiving data
     sync input port schedIn: Svc.Sched
