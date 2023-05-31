@@ -9,6 +9,7 @@
 
 #include "Arduino/Drv/StreamDriver/StreamDriverComponentAc.hpp"
 #include "Os/Task.hpp"
+#include <FprimeArduino.hpp>
 
 namespace Arduino {
 // Allow for setting serial ports on linux from the inputs
@@ -28,18 +29,13 @@ class StreamDriver : public StreamDriverComponentBase {
     StreamDriver(const char* compName /*!< The component name*/
     );
 
-    //! Initialize object StreamDriver
-    //!
-    void init(const NATIVE_INT_TYPE instance /*!< The instance number*/
-              );
-
     //! Destroy object StreamDriver
     //!
     ~StreamDriver(void);
 
     //! Configure this port
     //!
-    void configure(FwIndexType port_number, const PlatformIntType baud);
+    void configure(Stream* streamDriver);
 
   private:
     //! Read the actual data

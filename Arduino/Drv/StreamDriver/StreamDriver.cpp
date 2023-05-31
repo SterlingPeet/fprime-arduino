@@ -20,10 +20,6 @@ StreamDriver ::StreamDriver(const char* compName)
 
 StreamDriver ::~StreamDriver(void) {}
 
-void StreamDriver ::init(const NATIVE_INT_TYPE instance) {
-    StreamDriverComponentBase::init(instance);
-}
-
 // ----------------------------------------------------------------------
 // Handler implementations for user-defined typed input ports
 // ----------------------------------------------------------------------

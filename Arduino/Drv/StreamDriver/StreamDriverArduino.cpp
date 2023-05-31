@@ -14,7 +14,7 @@ namespace Arduino {
 
 void StreamDriver::configure(Stream* streamDriver) {
     FW_ASSERT(streamDriver != nullptr);
-    m_port_pointer = streamDriverl
+    m_port_pointer = streamDriver;
     if (this->isConnected_ready_OutputPort(0)) {
         this->ready_out(0);
     }
