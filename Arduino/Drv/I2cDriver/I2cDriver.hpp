@@ -29,6 +29,7 @@ namespace Arduino {
       );
 
       void open(TwoWire* wire);
+      void close();
 
       //! Destroy object I2cDriver
       //!

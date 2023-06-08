@@ -17,6 +17,12 @@ namespace Arduino {
     wire->begin();
   }
 
+  void I2cDriver::close() {
+    FW_ASSERT(m_port_pointer != 0);
+    TwoWire* wire_ptr = reinterpret_cast<TwoWire*>(m_port_pointer);
+    wire_ptr->end();
+  }
+
   Drv::I2cStatus I2cDriver::read_data(U32 addr, Fw::Buffer& fwBuffer)
   {
     TwoWire* wire_ptr = reinterpret_cast<TwoWire*>(m_port_pointer);
