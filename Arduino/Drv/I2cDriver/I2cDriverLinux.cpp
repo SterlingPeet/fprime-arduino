@@ -11,7 +11,6 @@
 namespace Arduino {
 
     void I2cDriver::close() {
-        FW_ASSERT(m_port_pointer != 0);
         
     }
 
