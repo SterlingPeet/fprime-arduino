@@ -1,3 +1,4 @@
+restrict_platforms(ArduinoFw)
 starts_with(IS_MBED "${ARDUINO_FQBN}" "arduino:mbed")
 if (IS_MBED)
     set(CMAKE_CXX_STANDARD 14)
