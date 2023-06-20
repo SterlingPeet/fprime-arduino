@@ -12,6 +12,7 @@ set(SOURCE_FILES
 )
 if(FPRIME_ARDUINO)
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/I2cDriverArduino.cpp")
+    target_use_arduino_libraries("Wire")
 else()
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/I2cDriverLinux.cpp")
 endif()
