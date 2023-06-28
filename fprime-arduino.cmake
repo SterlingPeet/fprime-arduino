@@ -1,5 +1,5 @@
-starts_with(IS_MBED "${ARDUINO_FQBN}" "arduino:mbed")
-if (IS_MBED)
+starts_with(IS_RP2040 "${ARDUINO_FQBN}" "rp2040")
+if (IS_RP2040)
     set(CMAKE_CXX_STANDARD 14)
     add_compile_definitions(_GNU_SOURCE)
 endif()
