@@ -17,5 +17,3 @@ else()
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/I2cDriverLinux.cpp")
 endif()
 register_fprime_module()
-
-setup_arduino_libraries()
